@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.kyho.entities.Users;
+import com.kyho.blog.entities.Users;
+
 
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 

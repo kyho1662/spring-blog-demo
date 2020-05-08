@@ -1,4 +1,4 @@
-package com.kyho.entities;
+package com.kyho.blog.entities;
 
 import javax.persistence.*;
 import java.util.Set;
