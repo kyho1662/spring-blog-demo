@@ -1,15 +1,14 @@
 package com.kyho.blog.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.kyho.blog.entities.Users;
+import com.kyho.blog.entities.User;
 
+@Repository
+public interface UsersRepository extends JpaRepository<User, Integer> {
 
-public interface UsersRepository extends JpaRepository<Users, Integer> {
-
-	Optional<Users> findByName(String username);
+	User findByName(String username);
 	
 	
 

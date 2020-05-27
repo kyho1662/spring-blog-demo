@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
+		
 		auth.userDetailsService(userDetailsService)
 		.passwordEncoder(getPasswordEncoder());
 	}
@@ -39,9 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.anyRequest().permitAll()
 		.and()
 		.formLogin().permitAll();
-		
-		// Spring Security (Authentication & Authorisation from MySQL) in  Spring Boot App
-		// 25:00~
+	
 	}
 
 
@@ -57,7 +56,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			@Override
 			public boolean matches(CharSequence rawPassword, String encodedPassword) {
 				// TODO Auto-generated method stub
-				return true;
+				
+				System.out.println(rawPassword);
+				System.out.println(encodedPassword);
+				
+				return encode(rawPassword).equals(encodedPassword);
 			}
 		};
 	} 

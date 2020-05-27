@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kyho.blog.entities.CustomUserDetails;
-import com.kyho.blog.entities.Users;
+import com.kyho.blog.entities.User;
 import com.kyho.blog.repository.UsersRepository;
 
 @Service
@@ -21,9 +21,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	    Optional<Users> optionalUsers = usersRepository.findByName(username);
+		User user = usersRepository.findByName(username);
 
-	    optionalUsers.orElseThrow(() ->  new UsernameNotFoundException("Username not found"));
-	    return optionalUsers.map(CustomUserDetails::new).get();
-	    }
+		if (user == null)
+		       throw new UsernameNotFoundException("Bad credentials!");
+		
+		return new org.springframework.security.core.userdetails.User(
+		        user.getName(), 
+		        user.getPassword(), // shall to be the already BCrypt-encrypted password
+		        new CustomUserDetails(user).getAuthorities());
+		}
 }
+

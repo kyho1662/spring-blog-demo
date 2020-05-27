@@ -1,55 +1,63 @@
 package com.kyho.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private int id;
+    private int userId;
     @Column(name = "email")
     private String email;
+    @JsonIgnore
     @Column(name = "password")
     private String password;
     @Column(name = "name")
     private String name;
     @Column(name = "last_name")
     private String lastName;
-    @Column(name = "active")
-    private int active;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public Users() {
+    public User() {
     }
     
-    public Users(Users users) {
-    	this.active = users.getActive();
+    public User(User users) {
     	this.email = users.getEmail();
     	this.roles = users.getRoles();
     	this.name = users.getName();
     	this.lastName = users.getLastName();
-    	this.id = users.getId();
+    	this.userId = users.getUserId();
     	this.password = this.getPassword();
     	
     }
 
-
-    public int getId() {
-        return id;
+    public User(String name, String lastName, String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.roles = roles;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -57,7 +65,7 @@ public class Users {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -65,7 +73,7 @@ public class Users {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -73,23 +81,15 @@ public class Users {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public int getActive() {
-        return active;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
-    }
-
     public Set<Role> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(Set<Role> roles) {

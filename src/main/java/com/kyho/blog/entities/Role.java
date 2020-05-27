@@ -15,10 +15,15 @@ public class Role {
     private String role;
 
     public Role() {
+
+    }
+
+    public Role(String role) {
+        this.role = role;
     }
 
     public int getRoleId() {
-        return roleId;
+        return this.roleId;
     }
 
     public void setRoleId(int roleId) {
@@ -26,7 +31,7 @@ public class Role {
     }
 
     public String getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(String role) {
