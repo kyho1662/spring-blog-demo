@@ -4,16 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ajax 1 - Text File</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+          crossorigin="anonymous">
+    <title>Blog Demo</title>
 </head>
 <body>
-<button id="button">Get Text File</button>
+<header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+        <h1 id="header-title">Posts</h1>
+    </div>
+</header>
+<div class="container">
+    <div id="main" class="card card-body">
+        <ul id="posts" class="list-group"></ul>
+    </div>
+</div>
+<!--<button id="button">Load Posts</button>-->
 <br><br>
 <div id="text"></div>
 
 <script>
+
+    /*
+     class User {
+
+         constructor(userId, email, name, lastName, roles) {
+             this.userId = userId;
+             this.email = email;
+             this.name = name;
+             this.lastName = lastName;
+             this.roles = new Role(JSON.parse(roles));
+         }
+     }
+
+     class Role {
+         constructor(roleId, role) {
+             this.roleId = roleId;
+             this.role = role;
+
+         }
+     }
+     class Post {
+
+         constructor(postId, title, body, dateCreated, creator) {
+             this.postId = postId;
+             this.title = title;
+             this.body = body;
+             this.dateCreated = dateCreated;
+             this.creator = new User(JSON.parse(creator));
+
+         }
+     } */
+
+    class Posts {
+
+        constructor(posts) {
+            this.posts = posts;
+
+        }
+
+        getId(i) {
+            return this.posts[i].postId;
+        }
+
+        getTitle(i) {
+            return this.posts[i].title;
+        }
+
+        getBody(i) {
+            return this.posts[i].body;
+        }
+
+        getDateCreated(i) {
+            let date = new Date(this.posts[i].dateCreated)
+            return date.toISOString().slice(0,19).split("T");
+        }
+
+        getCreator(i) {
+            let creator = this.posts[i].creator;
+            return creator.name;
+        }
+
+
+
+    }
+
     // Create event listener
-    document.getElementById('button').addEventListener('click', loadPosts);
+    //document.getElementById('button').addEventListener('click', loadPosts);
+
+    loadPosts();
 
     function loadPosts() {
       console.log("hello ajax");
@@ -24,8 +104,47 @@
 
       xhr.onload = function() {
           if(this.status == 200) {
+
+
               console.log(this.responseText);
+
+
+
+
+              let posts = new Posts(JSON.parse(this.responseText));
+
+              let postCount = Object.keys(posts).length;
+
+
+              console.log(posts.getBody(0));
+              console.log(posts.getCreator(0));
+
+
+              let postGroupElement = document.getElementById('posts');
+
+              for(let i = 0; i < postCount; i++) {
+
+                  let postElement= document.createElement('li');
+
+                  postElement.className = 'list-group-item';
+
+                  postElement.innerHTML = `<h3>${posts.getTitle(i)}</h3>
+                      <p>${posts.getBody(i)}</p>
+                      <I>${posts.getCreator(i)}<br>
+                      ${posts.getDateCreated(i)}</I>`;
+
+                  //postElement.appendChild(postText);
+
+                  postGroupElement.appendChild(postElement);
+
+              }
+
+
           }
+      }
+
+      xhr.onerror = function() {
+          console.log('Request Error...');
       }
       // Sends request
       xhr.send();

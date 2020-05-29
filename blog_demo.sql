@@ -31,7 +31,6 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`user_id`)
@@ -40,10 +39,10 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 
-INSERT INTO `user` (`user_id`, `email`, `last_name`, `name`, `password`)
+INSERT INTO `user` (`user_id`, `email`, `name`, `password`)
 VALUES
-	(1,'admin@gmail.com','a','admin','admin'),
-    (2, 'sam@gmail.com', 's', 'sam', 'sam');
+	(1,'admin@gmail.com','admin','admin'),
+    (2, 'sam@gmail.com', 'sam', 'sam');
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;

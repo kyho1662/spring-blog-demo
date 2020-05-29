@@ -22,6 +22,8 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+
+
     @PostMapping(value = "/register")
     public String register(@RequestBody UserRegistration userRegistration) {
         if(!userRegistration.getPassword().equals(userRegistration.getPasswordConfirmation())) {
@@ -33,7 +35,7 @@ public class UserController {
 
         // input user
 
-        userService.save(new User(userRegistration.getName(), userRegistration.getLastName(),
+        userService.save(new User(userRegistration.getName(),
                 userRegistration.getEmail(), userRegistration.getPassword(), new HashSet<Role>(Arrays.asList(roleService.getRole("USER")))));
 
         return "User created";

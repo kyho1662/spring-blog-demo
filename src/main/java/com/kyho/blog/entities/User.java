@@ -20,8 +20,6 @@ public class User {
     private String password;
     @Column(name = "name")
     private String name;
-    @Column(name = "last_name")
-    private String lastName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -34,17 +32,15 @@ public class User {
     	this.email = users.getEmail();
     	this.roles = users.getRoles();
     	this.name = users.getName();
-    	this.lastName = users.getLastName();
     	this.userId = users.getUserId();
     	this.password = this.getPassword();
     	
     }
 
-    public User(String name, String lastName, String email, String password, Set<Role> roles) {
+    public User(String name, String email, String password, Set<Role> roles) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.lastName = lastName;
         this.roles = roles;
     }
 
@@ -78,14 +74,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Set<Role> getRoles() {

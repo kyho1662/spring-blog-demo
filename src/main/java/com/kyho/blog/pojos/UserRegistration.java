@@ -8,15 +8,13 @@ import java.util.Set;
 public class UserRegistration {
 
     private String name;
-    private String lastName;
     private String email;
 
     private String password;
     private String passwordConfirmation;
 
-    public UserRegistration(String name, String lastName, String email, String password, String passwordConfirmation) {
+    public UserRegistration(String name, String email, String password, String passwordConfirmation) {
         this.name = name;
-        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
@@ -28,14 +26,6 @@ public class UserRegistration {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {
