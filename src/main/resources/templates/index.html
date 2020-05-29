@@ -108,14 +108,7 @@
 
 
               let posts = new Posts(JSON.parse(this.responseText));
-
               let postCount = Object.keys(posts).length;
-
-
-              console.log(posts.getBody(0));
-              console.log(posts.getCreator(0));
-
-
               let postGroupElement = document.getElementById('posts');
 
               for(let i = 0; i < postCount; i++) {
@@ -128,8 +121,6 @@
                       <p>${posts.getBody(i)}</p>
                       <I>${posts.getCreator(i)}<br>
                       ${posts.getDateCreated(i)}</I>`;
-
-                  //postElement.appendChild(postText);
 
                   postGroupElement.appendChild(postElement);
 
