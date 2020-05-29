@@ -61,7 +61,6 @@
 
         constructor(posts) {
             this.posts = posts;
-
         }
 
         getId(i) {
@@ -96,7 +95,6 @@
     loadPosts();
 
     function loadPosts() {
-      console.log("hello ajax");
 
       let xhr = new XMLHttpRequest();
 
@@ -107,8 +105,6 @@
 
 
               console.log(this.responseText);
-
-
 
 
               let posts = new Posts(JSON.parse(this.responseText));
