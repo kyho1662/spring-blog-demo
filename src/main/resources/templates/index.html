@@ -17,7 +17,7 @@
 </header>
 <div class="container">
     <div id="main" class="card card-body">
-        <ul id="posts" class="list-group"></ul>
+        <ul id="post-list" class="list-group"></ul>
     </div>
 </div>
 <!--<button id="button">Load Posts</button>-->
@@ -26,107 +26,48 @@
 
 <script>
 
-    /*
-     class User {
+    class UI {
+        static displayPosts(p) {
+            const posts = JSON.parse(p);
 
-         constructor(userId, email, name, lastName, roles) {
-             this.userId = userId;
-             this.email = email;
-             this.name = name;
-             this.lastName = lastName;
-             this.roles = new Role(JSON.parse(roles));
-         }
-     }
-
-     class Role {
-         constructor(roleId, role) {
-             this.roleId = roleId;
-             this.role = role;
-
-         }
-     }
-     class Post {
-
-         constructor(postId, title, body, dateCreated, creator) {
-             this.postId = postId;
-             this.title = title;
-             this.body = body;
-             this.dateCreated = dateCreated;
-             this.creator = new User(JSON.parse(creator));
-
-         }
-     } */
-
-    class Posts {
-
-        constructor(posts) {
-            this.posts = posts;
+            posts.forEach((post) => UI.addPostToList(post));
         }
 
-        getId(i) {
-            return this.posts[i].postId;
+        static addPostToList(post) {
+            const list = document.querySelector('#post-list');
+
+            const row = document.createElement('li');
+
+            row.className = 'list-group-item';
+
+            row.innerHTML = `<h3>${post.title}</h3>
+                <p>${post.body}</p>
+                <I>${post.creator.name}<br>
+                ${UI.dateEncoder(post.dateCreated)}</I>`;
+
+            list.appendChild(row);
+
         }
 
-        getTitle(i) {
-            return this.posts[i].title;
+        static dateEncoder(date) {
+            let dateEncoded = new Date(date)
+            return dateEncoded.toISOString().slice(0,19).split("T");
+
         }
-
-        getBody(i) {
-            return this.posts[i].body;
-        }
-
-        getDateCreated(i) {
-            let date = new Date(this.posts[i].dateCreated)
-            return date.toISOString().slice(0,19).split("T");
-        }
-
-        getCreator(i) {
-            let creator = this.posts[i].creator;
-            return creator.name;
-        }
-
-
-
     }
-
-    // Create event listener.
-    //document.getElementById('button').addEventListener('click', loadPosts);
 
     loadPosts();
 
+    // Load posts from DB with vanilla js ajax
     function loadPosts() {
-
       let xhr = new XMLHttpRequest();
 
       xhr.open('GET', 'http://localhost:8080/posts', true);
 
       xhr.onload = function() {
           if(this.status == 200) {
-
-
               console.log(this.responseText);
-
-
-              let posts = new Posts(JSON.parse(this.responseText));
-              let postCount = Object.keys(posts).length;
-              let postGroupElement = document.getElementById('posts');
-
-              for(let i = 0; i < postCount; i++) {
-
-                  let postElement= document.createElement('li');
-
-                  postElement.className = 'list-group-item';
-
-                  postElement.innerHTML = `<h3>${posts.getTitle(i)}</h3>
-                      <p>${posts.getBody(i)}</p>
-                      <I>${posts.getCreator(i)}<br>
-                      ${posts.getDateCreated(i)}</I>`;
-
-                  postGroupElement.appendChild(postElement);
-
-              }
-
-
+              UI.displayPosts(this.responseText);
           }
       }
 
@@ -146,6 +87,7 @@
 
     // HTTP Statuses
     // 200: "OK"
+    // 400: "Bad Request"
     // 403: "Forbidden"
     // 404: "Not Found"
   </script>

@@ -1,9 +1,7 @@
 package com.kyho.blog.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class HomeController {
@@ -13,4 +11,10 @@ public class HomeController {
 
         return "index";
     }
+
+    @RequestMapping(value = "/signup")
+    public String signUp() {
+        return "signup";
+    }
+
 }

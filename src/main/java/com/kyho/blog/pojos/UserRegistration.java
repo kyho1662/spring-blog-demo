@@ -1,5 +1,6 @@
 package com.kyho.blog.pojos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kyho.blog.entities.Role;
 
 import javax.persistence.*;
@@ -7,10 +8,13 @@ import java.util.Set;
 
 public class UserRegistration {
 
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("email")
     private String email;
-
+    @JsonProperty("password")
     private String password;
+    @JsonProperty("passwordConfirmation")
     private String passwordConfirmation;
 
     public UserRegistration(String name, String email, String password, String passwordConfirmation) {
