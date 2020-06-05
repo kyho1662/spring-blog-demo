@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+          crossorigin="anonymous">
+    <title>My Page</title>
+</head>
+<body>
+<header id="main-header" class="bg-success text-white p-4 mb-3">
+    <div class="container">
+        <h1 id="header-title">My Posts</h1>
+        <tr id="button-group">
+            <button id="logout-btn" class="btn btn-dark" >Logout</button>
+            <a href="/" id="main-btn" class="btn btn-dark" >Main Page</a>
+            <a href="write" id="write-btn" class="btn btn-dark" >Write</a>
+        </tr>
+    </div>
+
+</header>
+<div class="container">
+    <div id="main" class="card card-body">
+        <ul id="post-list" class="list-group"></ul>
+    </div>
+</div>
+<!--<button id="button">Load Posts</button>-->
+<br><br>
+<div id="text"></div>
+
+<script>
+
+    class UI {
+        static displayPosts(p) {
+            const posts = JSON.parse(p);
+
+            posts.forEach((post) => UI.addPostToList(post));
+        }
+
+        static addPostToList(post) {
+            const list = document.querySelector('#post-list');
+
+            const row = document.createElement('li');
+
+            row.className = 'list-group-item';
+
+            row.innerHTML = `<h3>${post.title}</h3>
+                <p>${post.body}</p>
+                <I>${post.creator.name}<br>
+                ${UI.dateEncoder(post.dateCreated)}</I>
+                <botton id="delete-btn" class="btn btn-danger" style="float:right">삭제</botton>
+                <botton id="update-btn" class="btn btn-info" style="float:right">수정</botton>`;
+
+            // 포스트 삭제
+            console.log(row.children);
+            row.children[3].addEventListener('click', deletePost);
+            //document.querySelector('#delete-btn').addEventListener('click', deletePost);
+
+            function deletePost(e) {
+
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('POST', 'http://localhost:8080/delete', true);
+
+                xhr.onload = function() {
+                    if(this.status == 200) {
+                        console.log(this.responseText);
+                        //UI.displayPosts(this.responseText);
+                    }
+                }
+
+                xhr.onerror = function() {
+                    console.log('Request Error...');
+                }
+
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                // Sends request
+
+                console.log(post);
+                xhr.send(JSON.stringify(post));
+
+                location.reload();
+
+
+            };
+
+
+
+
+            // 포스트 수정
+
+            row.children[4].addEventListener('click', modifyPost);
+
+            function modifyPost(e) {
+
+                e.preventDefault();
+
+                row.innerHTML = `<input type="text" id="title" class="form-control" placeholder="제목" value=${post.title}>
+                    <textarea rows="10" id="body" placeholder="본문" class="form-control">${post.body}</textarea>
+                    <input type="submit" value="Submit" class="btn btn-primary btn-block">`;
+
+
+                row.children[2].addEventListener('click', modify);
+
+                function modify(e) {
+
+
+                    post.title = document.querySelector('#title').value;
+                    post.body = document.querySelector('#body').value;
+
+                    console.log("here");
+                    let xhr = new XMLHttpRequest();
+
+                    xhr.open('POST', 'http://localhost:8080/post', true);
+
+                    xhr.onload = function() {
+                        if(this.status == 200) {
+                            console.log(this.responseText);
+                            //UI.displayPosts(this.responseText);
+                        }
+                    }
+
+                    xhr.onerror = function() {
+                        console.log('Request Error...');
+                    }
+
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+
+                    // Sends request
+
+                    console.log(post);
+                    xhr.send(JSON.stringify(post));
+
+                    location.reload();
+
+
+                }
+
+
+
+
+                // row.innerHTML = `<h3>${post.title}</h3>
+                // <p>${post.body}</p>
+                // <I>${post.creator.name}<br>
+                // ${UI.dateEncoder(post.dateCreated)}</I>
+                // <botton id="delete-btn" class="btn btn-danger" style="float:right">삭제</botton>
+                // <botton id="update-btn" class="btn btn-info" style="float:right">수정</botton>`;
+
+            };
+
+            list.appendChild(row);
+
+        }
+
+        static dateEncoder(date) {
+            let dateEncoded = new Date(date)
+
+            return dateEncoded.toLocaleDateString() + " " + dateEncoded.toLocaleTimeString();
+
+        }
+    }
+
+    loadPosts();
+
+    console.log("hello" + document.querySelector("#main-header").innerHTML);
+
+    if(sessionStorage.getItem('status') == 'loggedIn') {
+
+        document.querySelector('#logout-btn').addEventListener('click',loggedOut);
+
+        function loggedOut(e) {
+            window.sessionStorage.setItem('status', null);
+            window.sessionStorage.setItem('username',null);
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'http://localhost:8080/logout', true);
+
+            xhr.onload = function() {
+                if(this.status == 200) {
+                    console.log(this.responseText);
+                }
+            }
+
+            xhr.onerror = function() {
+                console.log('Request Error...');
+            }
+            // Sends request
+            xhr.send();
+
+            document.location.href = "/";
+        }
+    }
+
+
+
+
+
+    // Load posts from DB with vanilla js ajax
+    function loadPosts() {
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'http://localhost:8080/posts/'+ sessionStorage.getItem('username') , true);
+
+        xhr.onload = function() {
+            if(this.status == 200) {
+                console.log(this.responseText);
+                UI.displayPosts(this.responseText);
+            }
+        }
+
+        xhr.onerror = function() {
+            console.log('Request Error...');
+        }
+        // Sends request
+        xhr.send();
+    }
+
+    // readyState Values
+    // 0: request not initialized
+    // 1: server connection established
+    // 2: request received
+    // 3: processing request
+    // 4: request finished and response is ready
+
+    // HTTP Statuses
+    // 200: "OK"
+    // 400: "Bad Request"
+    // 403: "Forbidden"
+    // 404: "Not Found"
+</script>
+</body>
+</html>

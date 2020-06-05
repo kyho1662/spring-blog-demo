@@ -36,10 +36,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-		.antMatchers("/private").authenticated()
+		.antMatchers("/private","/write").authenticated()
 		.anyRequest().permitAll()
 		.and()
-		.formLogin().permitAll();
+		.formLogin().loginPage("/login").permitAll()
+		.and()
+		.logout().permitAll();
 	
 	}
 
@@ -55,11 +57,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			}
 			@Override
 			public boolean matches(CharSequence rawPassword, String encodedPassword) {
-				// TODO Auto-generated method stub
-				
-				System.out.println(rawPassword);
-				System.out.println(encodedPassword);
-				
 				return encode(rawPassword).equals(encodedPassword);
 			}
 		};

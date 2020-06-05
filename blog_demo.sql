@@ -14,10 +14,11 @@ CREATE TABLE `role` (
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
 
-INSERT INTO `role` (`role_id`, `role`)
+
+INSERT INTO `role` ( `role`)
 VALUES
-	(1,'ADMIN'),
-    (2,'USER');
+	('ADMIN'),
+    ('USER');
 
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -39,11 +40,13 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 
-INSERT INTO `user` (`user_id`, `email`, `name`, `password`)
+/*
+INSERT INTO `user` (`email`, `name`, `password`)
 VALUES
-	(1,'admin@gmail.com','admin','admin'),
-    (2, 'sam@gmail.com', 'sam', 'sam');
+	('admin@gmail.com','admin','admin'),
+    ('sam@gmail.com', 'sam', 'sam');
 
+*/
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,11 +68,12 @@ CREATE TABLE `user_role` (
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
 
+/*
 INSERT INTO `user_role` (`user_id`, `role_id`)
 VALUES
 	(1,1),
     (2,2);
-
+*/
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,11 +95,11 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-
-INSERT INTO `post` (`post_id`, `title`, `body`, `date_created`, `user_id`)
+/*
+INSERT INTO `post` (`title`, `body`, `date_created`, `user_id`)
 VALUES
-	(1, "hello wolrd", "hello hello", CURRENT_TIMESTAMP, 1);
-
+	("hello wolrd", "hello hello", CURRENT_TIMESTAMP, 1);
+*/
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -17,42 +17,42 @@ public class Post {
     @Column(name = "post_id")
 	private Long postId;
 
-		@Column(name = "title")
-		private String title;
+	@Column(name = "title")
+	private String title;
 
-		@Column(name = "body")
-		private String body;
+	@Column(name = "body")
+	private String body;
 
-		@Column(name = "date_created")
-		private Date dateCreated;
+	@Column(name = "date_created")
+	private Date dateCreated;
 
-		// many to one join
-		@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-		@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY)
-		@JoinColumn(name = "user_id")
-		private User creator;
+	// many to one join
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User creator;
 
 	public Post() {
 
 		}
 
-		public Long getPostId() {
+	public Long getPostId() {
 			return this.postId;
 		}
 
-		public void setPostId(Long postId) {
+	public void setPostId(Long postId) {
 			this.postId = postId;
 		}
 
-		public String getTitle() {
+	public String getTitle() {
 			return this.title;
 		}
 
-		public void setTitle(String title) {
+	public void setTitle(String title) {
 			this.title = title;
 		}
-
-		public String getBody() {
+		
+	public String getBody() {
 			return this.body;
 	}
 

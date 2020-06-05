@@ -13,7 +13,13 @@
 <header id="main-header" class="bg-success text-white p-4 mb-3">
     <div class="container">
         <h1 id="header-title">Posts</h1>
+        <tr id="button-group">
+            <a href="login" id="login-btn" class="btn btn-dark" >Login</a>
+            <a href="signup" id="signup-btn" class="btn btn-dark" >Sign Up</a>
+            <a href="write" id="write-btn" class="btn btn-dark" >Write</a>
+        </tr>
     </div>
+
 </header>
 <div class="container">
     <div id="main" class="card card-body">
@@ -51,12 +57,57 @@
 
         static dateEncoder(date) {
             let dateEncoded = new Date(date)
-            return dateEncoded.toISOString().slice(0,19).split("T");
+
+            return dateEncoded.toLocaleDateString() + " " + dateEncoded.toLocaleTimeString();
 
         }
     }
 
     loadPosts();
+
+    console.log("hello" + document.querySelector("#main-header").innerHTML);
+
+    if(sessionStorage.getItem('status') == 'loggedIn') {
+
+        document.querySelector("#main-header").innerHTML =
+            `<div class="container">
+                 <h1 id="header-title">Posts</h1>
+                 <tr id="button-group">
+                 <button id="logout-btn" class="btn btn-dark" >Logout</button>
+                 <a href="mypage" id="mypage-btn" class="btn btn-dark" >My Page</a>
+                 <a href="write" id="write-btn" class="btn btn-dark" >Write</a>
+                 </tr>
+             </div>`;
+
+        document.querySelector('#logout-btn').addEventListener('click',loggedOut);
+
+        function loggedOut(e) {
+            window.sessionStorage.setItem('status', null);
+            window.sessionStorage.setItem('username',null);
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'http://localhost:8080/logout', true);
+
+            xhr.onload = function() {
+                if(this.status == 200) {
+                    console.log(this.responseText);
+                }
+            }
+
+            xhr.onerror = function() {
+                console.log('Request Error...');
+            }
+            // Sends request
+            xhr.send();
+
+            document.location.href = "/";
+        }
+    }
+
+
+
+
 
     // Load posts from DB with vanilla js ajax
     function loadPosts() {
